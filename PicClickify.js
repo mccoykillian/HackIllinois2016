@@ -53,11 +53,13 @@ function getLandmarkReqCallback(img) {
                   fromDate,
                   toDate,
                   function(data) {
-                    var hotelPrice = data.results[0].total_price.amount;
-                    var hotelName = data.results[0].property_name;
-                    var total = Number(flightFare) + Number(hotelPrice);
-                    total = total.toFixed(0);
-                    console.log("Want to visit " + landmark + "? Stay for a week  for $" + total + "\n");
+                    if(data.results) {
+                      var hotelPrice = data.results[0].total_price.amount;
+                      var hotelName = data.results[0].property_name;
+                      var total = Number(flightFare) + Number(hotelPrice);
+                      total = total.toFixed(0);
+                      console.log("Want to visit " + landmark + "? Stay for a week  for $" + total + "\n");
+                    }
                   }
                 );
               }
