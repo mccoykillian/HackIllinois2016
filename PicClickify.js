@@ -13,11 +13,10 @@ function convertFileToDataURLviaFileReader(url, callback, img) {
 }
 
 function getBase64Image(img, callback) {
-  console.log(img.src);
   var prefix = img.src.substr(0, 4);
-  if (prefix === "data") {
+  if (prefix === "http") {
     convertFileToDataURLviaFileReader(img.src, callback, img);
-  } else if(prefix === "http"){
+  } else if(prefix === "data"){
     callback(img.src);
   }
 }
@@ -34,10 +33,35 @@ function getLocation(callback) {
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(callback);
   } else {
-    console.log("Can't get location.");
     // for debug purposes, use the lat/long of hack illinois's
-    callback(40.113795, -88.224884);
+    callback(config.hack_lat, config.hack_long);
   }
+}
+
+getLocation(
+  function(position) {
+    var lat = position.coords.latitude;
+    var long = position.coords.longitude;
+    console.log("Latitude: " + lat + ", Longitude: " + long);
+    getNearestAirport(
+      lat,
+      long,
+      function(data) {
+        console.log("AIRPORT FOUND: " + data[0].airport + "\n");
+      }
+    );
+  }
+);
+
+function getNearestAirport(lat, long, callback) {
+  $.ajax({
+    url: "https://api.sandbox.amadeus.com/v1.2/airports/nearest-relevant?apikey=" + config.amadeus_key + "&latitude=" + lat + "&longitude=" + long,
+    contentType: 'application/x-www-form-urlencoded;charset=utf-8',
+    success: callback,
+    error: function(xhr, ajaxOptions, thrownError) {
+      console.log(xhr.responseText);
+    }
+  });
 }
 
 var imgs = document.getElementsByTagName("img");
