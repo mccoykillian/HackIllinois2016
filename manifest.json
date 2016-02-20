@@ -1,0 +1,14 @@
+{
+  "manifest_version": 2,
+
+  "name": "ClickPic Ads",
+  "description": "Proof of concept prototype for image-based advertising",
+  "version": "0.1",
+  "content_scripts": [
+      {
+        "matches": ["http://*/*", "https://*/*"],
+        "js": ["config.js", "jquery-2.2.0.min.js", "PicClickify.js"]
+      }
+  ],
+  "author": "Collin Irwin and Killian McCoy"
+}
