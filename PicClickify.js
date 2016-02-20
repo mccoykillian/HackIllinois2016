@@ -22,7 +22,7 @@ function getBase64Image(img, callback) {
   }
 }
 
-function createFunc(img) {
+function getLandmarkReqCallback(img) {
   return function(data) {
     if (data && data.responses[0] && data.responses[0].landmarkAnnotations && data.responses[0].landmarkAnnotations[0].description) {
       console.log(data.responses[0].landmarkAnnotations[0].description + "\n");
@@ -51,7 +51,7 @@ for (var i = 0; i < len; ++i) {
               contentType: 'application/json',
               processData: true,
               data: '{"requests": [{ "image" : {"content": "' + dato + '"},"features": [{"type": "LANDMARK_DETECTION","maxResults": 1}]}]}',
-              success: createFunc(htmlImg),
+              success: getLandmarkReqCallback(htmlImg),
               error: function(xhr, ajaxOptions, thrownError) {
                 console.log(xhr.responseText);
               }
