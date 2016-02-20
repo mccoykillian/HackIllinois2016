@@ -5,7 +5,7 @@ function convertFileToDataURLviaFileReader(url, callback, img) {
       var reader = new FileReader();
       reader.onloadend = function() {
         callback(reader.result, img);
-      }
+      };
       reader.readAsDataURL(xhr.response);
     };
     xhr.open('GET', url);
@@ -26,7 +26,7 @@ function getLandmarkReqCallback(img) {
     if (data && data.responses[0] && data.responses[0].landmarkAnnotations && data.responses[0].landmarkAnnotations[0].description) {
       console.log(data.responses[0].landmarkAnnotations[0].description + "\n");
     }
-  }
+  };
 }
 
 function getLocation(callback) {
@@ -92,6 +92,6 @@ for (var i = 0; i < len; ++i) {
             });
           }
         }
-      )
+      );
     }, 300 * i);
 }
