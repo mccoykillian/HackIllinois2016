@@ -1,25 +1,23 @@
 function convertFileToDataURLviaFileReader(url, callback, img) {
-  var xhr = new XMLHttpRequest();
-  xhr.responseType = 'blob';
-  xhr.onload = function() {
-    var reader = new FileReader();
-    reader.onloadend = function() {
-      callback(reader.result, img);
-    }
-    reader.readAsDataURL(xhr.response);
-  };
-  xhr.open('GET', url);
-  xhr.send();
+    var xhr = new XMLHttpRequest();
+    xhr.responseType = 'blob';
+    xhr.onload = function() {
+      var reader = new FileReader();
+      reader.onloadend = function() {
+        callback(reader.result, img);
+      }
+      reader.readAsDataURL(xhr.response);
+    };
+    xhr.open('GET', url);
+    xhr.send();
 }
 
 function getBase64Image(img, callback) {
-  if (img.src.indexOf("base64") === -1) {
-    try {
-      convertFileToDataURLviaFileReader(img.src, callback, img);
-    } catch (err) {
-      console.log("Couldn't convert to base64: " + img.src + "\n")
-    }
-  } else {
+  console.log(img.src);
+  var prefix = img.src.substr(0, 4);
+  if (prefix === "data") {
+    convertFileToDataURLviaFileReader(img.src, callback, img);
+  } else if(prefix === "http"){
     callback(img.src);
   }
 }
@@ -33,7 +31,6 @@ function createFunc(img) {
 }
 
 var imgs = document.getElementsByTagName("img");
-
 var len = imgs.length;
 if (len > 15) {
   len = 15;
