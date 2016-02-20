@@ -53,12 +53,16 @@ function getLandmarkReqCallback(img) {
                   fromDate,
                   toDate,
                   function(data) {
-                    if(data.results) {
+                    var total = Number(flightFare);
+                    if(data.results && data.results.length > 0) {
                       var hotelPrice = data.results[0].total_price.amount;
                       var hotelName = data.results[0].property_name;
-                      var total = Number(flightFare) + Number(hotelPrice);
+                      total += Number(hotelPrice);
                       total = total.toFixed(0);
-                      console.log("Want to visit " + landmark + "? Stay for a week  for $" + total + "\n");
+                      console.log("Want to visit " + landmark + "? Round-trip air travel and a week-long hotel stay for $" + total + "\n");
+                    } else {
+                      total = total.toFixed(0);
+                      console.log("Want to visit " + landmark + "? Round-trip for as low as $" + total + "\n");
                     }
                   }
                 );
