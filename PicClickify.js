@@ -64,6 +64,7 @@ function getLandmarkReqCallback(img) {
                       total = total.toFixed(0);
                       console.log("Want to visit " + landmark + "? Round-trip for as low as $" + total + "\n");
                     }
+                    overLayText(landmark + ": $" + total);
                   }
                 );
               }
@@ -185,4 +186,13 @@ for (var i = 0; i < len; ++i) {
         }
       );
     }, 300 * i);
+}
+
+function overLayText(text) {
+   var btn = document.createElement("BUTTON");
+   var t = document.createTextNode(text);
+   btn.appendChild(t);
+   //Appending to DOM
+   document.body.appendChild(btn);
+   console.log("i am done overlaying " + text + " i did!");
 }
