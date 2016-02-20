@@ -4,6 +4,7 @@
   "name": "ClickPic Ads",
   "description": "Proof of concept prototype for image-based advertising",
   "version": "0.1",
+  "permissions": ["geolocation"],
   "content_scripts": [
       {
         "matches": ["http://*/*", "https://*/*"],

@@ -30,6 +30,16 @@ function getLandmarkReqCallback(img) {
   }
 }
 
+function getLocation(callback) {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(callback);
+  } else {
+    console.log("Can't get location.");
+    // for debug purposes, use the lat/long of hack illinois's
+    callback(40.113795, -88.224884);
+  }
+}
+
 var imgs = document.getElementsByTagName("img");
 var len = imgs.length;
 if (len > 15) {
