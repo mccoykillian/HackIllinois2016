@@ -1,3 +1,6 @@
+(function() {
+'use strict';
+
 function convertFileToDataURLviaFileReader(url, callback, img) {
   var xhr = new XMLHttpRequest();
   xhr.responseType = 'blob';
@@ -17,13 +20,14 @@ function getBase64Image(img, callback) {
   if (prefix === "http") {
     convertFileToDataURLviaFileReader(img.src, callback, img);
   } else if (prefix === "data") {
-    callback(img.src);
+    callback(img.src, img);
   }
 }
 
-var fromDate = "2016-03-04";
-var toDate = "2016-03-11";
-
+var checkIn = "2016-03-04";
+var checkOut = "2016-03-11";
+var fromDate = "2016-03-04--2016-03-05";
+var toDate = "2016-03-11--2016-03-12";
 // TODO: clean method up. Can locations even not exist? If it doesn't exist, should search for it
 function getLandmarkReqCallback(img) {
   return function(data) {
@@ -37,6 +41,11 @@ function getLandmarkReqCallback(img) {
           coords.longitude,
           function(data) {
             var destAirport = data[0].airport;
+            if(ourAirport === destAirport) {
+              var myParentDiv = img.parentNode.parentNode;
+              overLayText(myParentDiv, landmark + ": You live close by!");
+              return;
+            }
             getLowFare(
               ourAirport,
               destAirport,
@@ -50,21 +59,23 @@ function getLandmarkReqCallback(img) {
                   coords.latitude,
                   coords.longitude,
                   45,
-                  fromDate,
-                  toDate,
+                  checkIn,
+                  checkOut,
                   function(data) {
                     var total = Number(flightFare);
+                    var myParentDiv = img.parentNode.parentNode;
                     if(data.results && data.results.length > 0) {
                       var hotelPrice = data.results[0].total_price.amount;
                       var hotelName = data.results[0].property_name;
                       total += Number(hotelPrice);
                       total = total.toFixed(0);
                       console.log("Want to visit " + landmark + "? Round-trip air travel and a week-long hotel stay for $" + total + "\n");
+                      overLayText(myParentDiv, landmark + ": All expenses round trip starting at $" + total);
                     } else {
                       total = total.toFixed(0);
                       console.log("Want to visit " + landmark + "? Round-trip for as low as $" + total + "\n");
+                      overLayText(myParentDiv, landmark + ": Round trip flights starting at $" + total);
                     }
-                    overLayText(landmark + ": $" + total);
                   }
                 );
               }
@@ -115,7 +126,9 @@ function getLowFare(origin, destination, departureDate, returnDate, callback) {
       "&origin=" + origin +
       "&destination=" + destination +
       "&departure_date=" + departureDate +
-      "&return_date=" + returnDate,
+      "&return_date=" + returnDate +
+      "&number_of_results=" + "1" +
+      "&non_stop=" + "false",
     contentType: 'application/x-www-form-urlencoded;charset=utf-8',
     success: callback,
     error: function(xhr, ajaxOptions, thrownError) {
@@ -138,8 +151,8 @@ function getNearestAirport(lat, long, callback) {
   });
 }
 
-var ourAiport;
-getLocation(
+var ourAirport = "ORD";
+/*getLocation(
   function(position) {
     var lat = position.coords.latitude;
     var long = position.coords.longitude;
@@ -153,19 +166,18 @@ getLocation(
       }
     );
   }
-);
+);*/
 
 var imgs = document.getElementsByTagName("img");
 var len = imgs.length;
-if (len > 15) {
-  len = 15;
+if (len > 25) {
+  len = 25;
 }
-var index = 0;
-for (var i = 0; i < len; ++i) {
+for (let i = 0; i < len; ++i) {
   setTimeout(
     function() {
       getBase64Image(
-        imgs[index++],
+        imgs[i],
         function(dato, htmlImg) {
           if (dato) {
             dato = dato.substring(dato.indexOf("base64,") + 7);
@@ -185,14 +197,32 @@ for (var i = 0; i < len; ++i) {
           }
         }
       );
-    }, 300 * i);
+    }, 200 * i);
 }
 
-function overLayText(text) {
-   var btn = document.createElement("BUTTON");
-   var t = document.createTextNode(text);
-   btn.appendChild(t);
-   //Appending to DOM
-   document.body.appendChild(btn);
-   console.log("i am done overlaying " + text + " i did!");
+function overLayText(parentNode, text) {
+
+  var newDiv = document.createElement('div');
+
+  newDiv.innerHTML = `
+  <div style="
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    background: rgba(0,0,0,0.5);
+  ">
+    <div style="
+      bottom:  0;
+      position: absolute;
+      padding: 20px;
+      text-align: center;
+      color: white;
+    ">
+      ${text}
+    </div>
+  </div>
+  `;
+
+  parentNode.appendChild(newDiv);
 }
+}());
