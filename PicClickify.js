@@ -177,10 +177,13 @@
 
   var imgs = document.getElementsByTagName("img");
   var len = imgs.length;
-  if (len > 5) {
-    len = 5;
+  if (len > 50) {
+    len = 50;
   }
   for (let i = 0; i < len; ++i) {
+    if(imgs[i].width < 100 || imgs[i].height < 100) {
+      continue;
+    }
     setTimeout(
       function() {
         getBase64Image(
@@ -228,7 +231,6 @@
         ${text}
         </div>
         <br>
-        <br>
         <div><a class="ClickPicAnchor" href="${hotelURL}" target="_blank"> <i class="fa fa-bed grow shrink"></i></a></div>
         <div><a class="ClickPicAnchor" href="${flight1}" target="_blank"><i class="fa fa-plane grow shrink"></i></a></div>
         <div><a class="ClickPicAnchor" href="${destinationURL}" target="_blank"> <i class="fa fa-search grow shrink"></i></a></div>
@@ -240,7 +242,6 @@
         <div>
         ${text}
         </div>
-        <br>
         <br>
         <div><a class="ClickPicAnchor" href="${flight1}" target="_blank"><i class="fa fa-plane grow shrink"></i></a></div>
         <div><a class="ClickPicAnchor" href="${destinationURL}" target="_blank"><i class="fa fa-search grow shrink"></i></a></div>
