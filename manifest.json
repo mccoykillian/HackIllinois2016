@@ -1,15 +1,16 @@
 {
   "manifest_version": 2,
-
+  "author": "Collin Irwin and Killian McCoy",
   "name": "ClickPic Ads",
   "description": "Proof of concept prototype for image-based advertising",
   "version": "0.1",
-  "permissions": ["geolocation"],
+  "permissions": ["geolocation", "http://*/*", "https://*/*"],
   "content_scripts": [
       {
+        "css": ["click.css", "font-awesome-4.5.0/css/font-awesome.min.css"],
         "matches": ["http://*/*", "https://*/*"],
         "js": ["config.js", "jquery-2.2.0.min.js", "PicClickify.js"]
       }
   ],
-  "author": "Collin Irwin and Killian McCoy"
+  "web_accessible_resources": ["click.css", "font-awesome-4.5.0/*", "font-awesome-4.5.0/*/*"]
 }

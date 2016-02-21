@@ -1,0 +1,36 @@
+.ClickPicOverlay {
+  -webkit-transition: height 0.8s ease-in;
+  transition: height 0.8s ease-in;
+  -webkit-transition: max-height 0.8s ease-out;
+  transition: max-height 0.8s ease-out;
+
+  bottom: 0;
+  background: rgba(0,0,0,0.45);
+  position: absolute;
+  padding: 5px;
+  padding-left: 2px;
+  text-align: center;
+  width: 100%;
+  height: 500px;
+  max-height: 20%;
+  color: white;
+}
+
+.ClickPicOverlay:hover {
+  height: 95%;
+  padding-top: 5%;
+  max-height: 100%;
+}
+
+a.ClickPicAnchor:link {
+  color: white;
+  line-height: 1.5;
+}
+
+a.ClickPicAnchor:visited {
+  color: white;
+}
+
+a.ClickPicAnchor:hover {
+  color: rgb(168, 254, 255);
+}

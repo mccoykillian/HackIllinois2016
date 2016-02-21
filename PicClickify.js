@@ -25,9 +25,9 @@ function getBase64Image(img, callback) {
 }
 
 var checkIn = "2016-03-04";
-var checkOut = "2016-03-11";
-var fromDate = "2016-03-04--2016-03-05";
-var toDate = "2016-03-11--2016-03-12";
+var checkOut = "2016-03-07";
+var fromDate = "2016-03-04";
+var toDate = "2016-03-07";
 // TODO: clean method up. Can locations even not exist? If it doesn't exist, should search for it
 function getLandmarkReqCallback(img) {
   return function(data) {
@@ -42,8 +42,7 @@ function getLandmarkReqCallback(img) {
           function(data) {
             var destAirport = data[0].airport;
             if(ourAirport === destAirport) {
-              var myParentDiv = img.parentNode.parentNode;
-              overLayText(myParentDiv, landmark + ": You live close by!");
+              overLayText(img, landmark + ": You live close by!");
               return;
             }
             getLowFare(
@@ -63,19 +62,14 @@ function getLandmarkReqCallback(img) {
                   checkOut,
                   function(data) {
                     var total = Number(flightFare);
-                    var myParentDiv = img.parentNode.parentNode;
                     if(data.results && data.results.length > 0) {
                       var hotelPrice = data.results[0].total_price.amount;
                       var hotelName = data.results[0].property_name;
                       total += Number(hotelPrice);
-                      total = total.toFixed(0);
-                      console.log("Want to visit " + landmark + "? Round-trip air travel and a week-long hotel stay for $" + total + "\n");
-                      overLayText(myParentDiv, landmark + ": All expenses round trip starting at $" + total);
-                    } else {
-                      total = total.toFixed(0);
-                      console.log("Want to visit " + landmark + "? Round-trip for as low as $" + total + "\n");
-                      overLayText(myParentDiv, landmark + ": Round trip flights starting at $" + total);
                     }
+
+                    total = total.toFixed(0);
+                    overLayText(img, "Visit the " + landmark + ": $" + total + "\n");
                   }
                 );
               }
@@ -170,8 +164,8 @@ var ourAirport = "ORD";
 
 var imgs = document.getElementsByTagName("img");
 var len = imgs.length;
-if (len > 25) {
-  len = 25;
+if (len > 8) {
+  len = 8;
 }
 for (let i = 0; i < len; ++i) {
   setTimeout(
@@ -200,8 +194,8 @@ for (let i = 0; i < len; ++i) {
     }, 200 * i);
 }
 
-function overLayText(parentNode, text) {
-
+function overLayText(img, text, hotelURL, flightURL, destinationURL) {
+  var parentNode = img.parentNode.parentNode;
   var newDiv = document.createElement('div');
 
   newDiv.innerHTML = `
@@ -209,16 +203,15 @@ function overLayText(parentNode, text) {
     position: absolute;
     height: 100%;
     width: 100%;
-    background: rgba(0,0,0,0.5);
   ">
-    <div style="
-      bottom:  0;
-      position: absolute;
-      padding: 20px;
-      text-align: center;
-      color: white;
-    ">
+    <div class="ClickPicOverlay">
+      <div>
       ${text}
+      </div>
+      <br>
+      <div> <a class="ClickPicAnchor" href="${hotelURL}"> <i class="fa fa-bed"></i>Hotel</a>  </div>
+      <div> <a class="ClickPicAnchor" href="${flightURL}"> <i class="fa fa-plane"></i>Flight</a> </div>
+      <div> <a class="ClickPicAnchor" href="${destinationURL}"> <i class="fa fa-search"></i>Destination</a> </div>
     </div>
   </div>
   `;
