@@ -70,8 +70,15 @@
                         total += Number(hotelPrice);
                       }
                       var urlPrefix = "http://google.com/search?q=";
+                      var flightURL =
+                      "https://www.google.com/flights/#search" +
+                      ";f=" + ourAirport +
+                      ";t=" + destAirport +
+                      ";d=" + fromDate +
+                      ";r="+ toDate;
+
                       total = total.toFixed(0);
-                      overLayText(img, "Visit " + landmark + ": $" + total + "\n", urlPrefix + hotelName, urlPrefix + "flight " + flight1, urlPrefix + "flight " + flight2, urlPrefix + landmark);
+                      overLayText(img, "Visit " + landmark + ": $" + total + "\n", urlPrefix + hotelName, flightURL, urlPrefix + landmark);
                     }
                   );
                 }
@@ -196,46 +203,56 @@
       }, 200 * i);
   }
 
-  function overLayText(img, text, hotelURL, flight1, flight2, destinationURL) {
-    var parentNode = img.parentNode.parentNode;
+  function overLayText(img, text, hotelURL, flight1, destinationURL) {
+    var parentNode = img.parentNode;
+    var height = img.height;
+    var width = img.width;
+
     var newDiv = document.createElement('div');
+
+    newDiv.style.cssText = `
+      position: absolute;
+      height: ${height}px;
+      width: ${width}px;
+      z-index: 999999;
+    `;
+
     if (hotelURL) {
       newDiv.innerHTML = `
-      <div style="
-        position: absolute;
-        height: 100%;
-        width: 100%;
-      ">
-        <div class="ClickPicOverlay">
-          <div>
-          ${text}
-          </div>
-          <br>
-          <div> <a class="ClickPicAnchor" href="${hotelURL}" target="_blank"> <i class="fa fa-bed"></i>Hotel</a>  </div>
-          <div> <a class="ClickPicAnchor" href="${flight1}" target="_blank" onclick="window.open('${flight2}', '_blank');"> <i class="fa fa-plane"></i>Flight</a> </div>
-          <div> <a class="ClickPicAnchor" href="${destinationURL}" target="_blank"> <i class="fa fa-search"></i>Destination</a> </div>
+      <div class="ClickPicOverlay">
+        <div>
+        ${text}
         </div>
+        <br>
+        <br>
+        <div> <a class="ClickPicAnchor" href="${hotelURL}" target="_blank"> <i class="fa fa-bed"></i>Hotel</a>  </div>
+        <div> <a class="ClickPicAnchor" href="${flight1}" target="_blank"> <i class="fa fa-plane"></i>Flight</a> </div>
+        <div> <a class="ClickPicAnchor" href="${destinationURL}" target="_blank"> <i class="fa fa-search"></i>Destination</a> </div>
       </div>
       `;
     } else {
       newDiv.innerHTML = `
-      <div style="
-        position: absolute;
-        height: 100%;
-        width: 100%;
-        z-index: 	2147483647;
-      ">
-        <div class="ClickPicOverlay">
-          <div>
-          ${text}
-          </div>
-          <br>
-          <div> <a class="ClickPicAnchor" href="${flight1}" target="_blank" onclick="window.open('${flight2}', '_blank');"> <i class="fa fa-plane"></i>Flight</a> </div>
-          <div> <a class="ClickPicAnchor" href="${destinationURL}" target="_blank"> <i class="fa fa-search"></i>Destination</a> </div>
+      <div class="ClickPicOverlay">
+        <div>
+        ${text}
         </div>
+        <br>
+        <br>
+        <div> <a class="ClickPicAnchor" href="${flight1}" target="_blank"> <i class="fa fa-plane"></i>Flight</a> </div>
+        <div> <a class="ClickPicAnchor" href="${destinationURL}" target="_blank"> <i class="fa fa-search"></i>Destination</a> </div>
       </div>
       `;
     }
-    parentNode.appendChild(newDiv);
+
+    cancelEvents(newDiv);
+
+    parentNode.insertBefore(newDiv, parentNode.firstChild);
   }
+
+  function cancelEvents(div) {
+    div.addEventListener('click', function(e) {
+      e.stopPropagation();
+    });
+  }
+
 }());
