@@ -19,6 +19,7 @@
   max-height: 32px;
   color: white;
   font-size: 15px;
+  font-family: 'Century Gothic', sans-serif;
 }
 
 .ClickPicOverlay:hover {
