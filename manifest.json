@@ -5,6 +5,7 @@
   "description": "Proof of concept prototype for image-based advertising",
   "version": "0.1",
   "permissions": ["geolocation", "http://*/*", "https://*/*"],
+  "browser_action": { "default_icon" : "pictripnicest.png"},
   "content_scripts": [
       {
         "css": ["click.css", "font-awesome-4.5.0/css/font-awesome.min.css"],

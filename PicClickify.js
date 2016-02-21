@@ -70,15 +70,19 @@
                         total += Number(hotelPrice);
                       }
                       var urlPrefix = "http://google.com/search?q=";
+                      var hotelURL;
+                      if(hotelName) {
+                        hotelURL = urlPrefix + hotelName;
+                      }
                       var flightURL =
-                      "https://www.google.com/flights/#search" +
-                      ";f=" + ourAirport +
-                      ";t=" + destAirport +
-                      ";d=" + fromDate +
-                      ";r="+ toDate;
+                        "https://www.google.com/flights/#search" +
+                        ";f=" + ourAirport +
+                        ";t=" + destAirport +
+                        ";d=" + fromDate +
+                        ";r="+ toDate;
 
                       total = total.toFixed(0);
-                      overLayText(img, "Visit " + landmark + ": $" + total + "\n", urlPrefix + hotelName, flightURL, urlPrefix + landmark);
+                      overLayText(img, "Visit " + landmark + ": $" + total + "\n", hotelURL, flightURL, urlPrefix + landmark);
                     }
                   );
                 }
@@ -173,8 +177,8 @@
 
   var imgs = document.getElementsByTagName("img");
   var len = imgs.length;
-  if (len > 25) {
-    len = 25;
+  if (len > 5) {
+    len = 5;
   }
   for (let i = 0; i < len; ++i) {
     setTimeout(
@@ -225,9 +229,9 @@
         </div>
         <br>
         <br>
-        <div> <a class="ClickPicAnchor" href="${hotelURL}" target="_blank"> <i class="fa fa-bed"></i>Hotel</a>  </div>
-        <div> <a class="ClickPicAnchor" href="${flight1}" target="_blank"> <i class="fa fa-plane"></i>Flight</a> </div>
-        <div> <a class="ClickPicAnchor" href="${destinationURL}" target="_blank"> <i class="fa fa-search"></i>Destination</a> </div>
+        <div><a class="ClickPicAnchor" href="${hotelURL}" target="_blank"> <i class="fa fa-bed grow shrink"></i></a></div>
+        <div><a class="ClickPicAnchor" href="${flight1}" target="_blank"><i class="fa fa-plane grow shrink"></i></a></div>
+        <div><a class="ClickPicAnchor" href="${destinationURL}" target="_blank"> <i class="fa fa-search grow shrink"></i></a></div>
       </div>
       `;
     } else {
@@ -238,8 +242,8 @@
         </div>
         <br>
         <br>
-        <div> <a class="ClickPicAnchor" href="${flight1}" target="_blank"> <i class="fa fa-plane"></i>Flight</a> </div>
-        <div> <a class="ClickPicAnchor" href="${destinationURL}" target="_blank"> <i class="fa fa-search"></i>Destination</a> </div>
+        <div><a class="ClickPicAnchor" href="${flight1}" target="_blank"><i class="fa fa-plane grow shrink"></i></a></div>
+        <div><a class="ClickPicAnchor" href="${destinationURL}" target="_blank"><i class="fa fa-search grow shrink"></i></a></div>
       </div>
       `;
     }
